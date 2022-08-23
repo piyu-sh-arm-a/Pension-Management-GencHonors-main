@@ -1,0 +1,59 @@
+version: '3.7'
+services:
+  EUREKA-SERVER:
+    image: piyush1001/eureka-server:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8761:8761"
+    networks:
+      - authentication-service-network
+  AUTH-SERVICE:
+    image: piyush1001/authorization-service:1.0
+    mem_limit: 700m
+    ports:
+      - "8081:8081"
+    networks:
+      - authentication-service-network
+    depends_on:
+      - EUREKA-SERVER
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://EUREKA-SERVER:8761/eureka
+
+  PENSION-DISBURSEMENT-SERVICE:
+    image: piyush1001/pension-disbursement-service:1.0
+    mem_limit: 700m
+    ports:
+      - "8084:8084"
+    networks:
+      - authentication-service-network
+    depends_on:
+      - EUREKA-SERVER
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://EUREKA-SERVER:8761/eureka
+  PENSIONER-DETAIL-SERVICE:
+    image: piyush1001/pensioner-detail-service:1.0
+    mem_limit: 700m
+    ports:
+      - "8083:8083"
+    networks:
+      - authentication-service-network
+    depends_on:
+      - EUREKA-SERVER
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://EUREKA-SERVER:8761/eureka
+  PROCESS-PENSION-SERVICE:
+    image: piyush1001/process-pension-service:1.0
+    mem_limit: 700m
+    ports:
+      - "8082:8082"
+    networks:
+      - authentication-service-network
+    depends_on:
+      - EUREKA-SERVER
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://EUREKA-SERVER:8761/eureka
+
+networks:
+    authentication-service-network:
+        
+      
